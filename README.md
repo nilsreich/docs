@@ -1,3 +1,7 @@
+---
+description: template literals library
+---
+
 # lit-html
 
 ## Introduction
@@ -10,7 +14,7 @@ lit-html lets you write HTML templates in JavaScript using template literals wit
 
 ### lit-html Templates
 
-lit-html templates are tagged template literals - they look like JavaScript strings but are enclosed in backticks (`) instead of quotes - and tagged with lit-html’s html tag:
+lit-html templates are tagged template literals - they look like JavaScript strings but are enclosed in backticks \(\`\) instead of quotes - and tagged with lit-html’s html tag:
 
 ```javascript
 html`<h1>Hello ${name}</h1>`
@@ -28,7 +32,7 @@ lit-html is lazily rendered. Calling this function will evaluate the template li
 
 ### Rendering
 
-To render a TemplateResult, call the render() function with a result and DOM container to render to:
+To render a TemplateResult, call the render\(\) function with a result and DOM container to render to:
 
 ```javascript
 const result = myTemplate({title: 'Hello', body: 'lit-html is cool'});
@@ -49,12 +53,14 @@ const myTemplate = html`<div>Hello World</div>`;
 
 // Render the template
 render(myTemplate, document.body);
-````
+`
+```
 
-The lit-html template is a tagged template literal. The template itself looks like a regular JavaScript string, but enclosed in backticks (`) instead of quotes. The browser passes the string to lit-html’s html tag function.
+The lit-html template is a tagged template literal. The template itself looks like a regular JavaScript string, but enclosed in backticks \(\`\) instead of quotes. The browser passes the string to lit-html’s html tag function.
 
 The html tag function returns a TemplateResult—a lightweight object that represents the template to be rendered.
 
 The render function actually creates DOM nodes and appends them to a DOM tree. In this case, the rendered DOM replaces the contents of the document’s body tag.
 
 ### Render dynamic text
+

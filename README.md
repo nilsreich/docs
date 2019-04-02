@@ -8,19 +8,20 @@ description: template literals library
 
 ### What is lit-html
 
-lit-html is a simple, modern, safe, small and fast HTML templating library for JavaScript.
+lit-html ist eine einfache, moderne, sichere, kleine und schnelle HTML-Template-Bibliothek für JavaScript.
 
-lit-html lets you write HTML templates in JavaScript using template literals with embedded JavaScript expressions. Behind the scenes lit-html creates HTML `<template>` elements from your JavaScript templates and processes them so that it knows exactly where to insert and update the values from expressions.
+lit-html ermöglicht es Ihnen, HTML-Templates in JavaScript mit Template-Literalen mit eingebetteten JavaScript-Ausdrücken zu schreiben. Hinter den Kulissen erstellt lit-html HTML `<template>` Elemente aus Ihren JavaScript-Vorlagen und verarbeitet sie so, dass sie genau weiß, wo sie die Werte aus Ausdrücken einfügen und aktualisieren muss.
+
 
 ### lit-html Templates
 
-lit-html templates are tagged template literals - they look like JavaScript strings but are enclosed in backticks \(\`\) instead of quotes - and tagged with lit-html’s html tag:
+lit-html-Templates sind getagte Template-Literale - sie sehen aus wie JavaScript-Zeichenketten, sind aber in Backticks (`) anstelle von Anführungszeichen eingeschlossen - und mit dem HTML-Tag von lit-html versehen:
 
 ```javascript
 html`<h1>Hello ${name}</h1>`
 ```
 
-Since lit-html templates almost always need to merge in data from JavaScript values, and be able to update DOM when that data changes, they’ll most often be written within functions that take some data and return a lit-html template, so that the function can be called multiple times:
+Da lit-html-Templates fast immer Daten aus JavaScript-Werten zusammenführen und das DOM aktualisieren können, wenn sich diese Daten ändern, werden sie meist in Funktionen geschrieben, die einige Daten aufnehmen und eine lit-html-Template zurückgeben, so dass die Funktion mehrfach aufgerufen werden kann:
 
 ```javascript
 let myTemplate = (data) => html`
@@ -28,11 +29,11 @@ let myTemplate = (data) => html`
   <p>${data.body}</p>`;
 ```
 
-lit-html is lazily rendered. Calling this function will evaluate the template literal using lit-html html tag, and return a TemplateResult - a record of the template to render and data to render it with. TemplateResults are very cheap to produce and no real work actually happens until they are rendered to the DOM.
+lit-html wird faul gerendert. Der Aufruf dieser Funktion wertet das Template-Literal mit dem HTML-Tag lit-html aus und gibt ein TemplateResult zurück - einen Datensatz der zu rendernden Vorlage und Daten, mit denen sie dargestellt werden kann. TemplateResults sind sehr billig zu produzieren und es findet keine echte Arbeit statt, bis sie im DOM gerendert werden.
 
 ### Rendering
 
-To render a TemplateResult, call the render\(\) function with a result and DOM container to render to:
+Um ein TemplateResultat zu rendern, rufen Sie die Funktion render() mit einem Ergebnis und einem DOM-Container auf, in den Sie rendern möchten:
 
 ```javascript
 const result = myTemplate({title: 'Hello', body: 'lit-html is cool'});
@@ -43,24 +44,119 @@ render(result, document.body);
 
 ### Render static html
 
-The simplest thing to do in lit-html is to render some static HTML.
+Die einfachste Sache, die man in lit-html tun kann, ist, etwas statisches HTML zu rendern.
 
 ```javascript
 import {html, render} from 'lit-html';
 
-// Declare a template
+// Deklaration der Vorlage
 const myTemplate = html`<div>Hello World</div>`;
 
-// Render the template
+// Rendern der Vorlage
 render(myTemplate, document.body);
-`
 ```
 
-The lit-html template is a tagged template literal. The template itself looks like a regular JavaScript string, but enclosed in backticks \(\`\) instead of quotes. The browser passes the string to lit-html’s html tag function.
+Die lit-html-Vorlage ist ein getaggtes Vorlagenliteral. Die Vorlage selbst sieht aus wie eine normale JavaScript-Zeichenkette, ist aber in Backticks (`) anstelle von Anführungszeichen eingeschlossen. Der Browser übergibt die Zeichenkette an die HTML-Tag-Funktion von lit-html.
 
-The html tag function returns a TemplateResult—a lightweight object that represents the template to be rendered.
+Die HTML-Tag-Funktion gibt ein TemplateResultat zurück - ein leichtgewichtiges Objekt, das die zu rendernde Vorlage repräsentiert.
 
-The render function actually creates DOM nodes and appends them to a DOM tree. In this case, the rendered DOM replaces the contents of the document’s body tag.
+Die Renderfunktion erstellt tatsächlich DOM-Knoten und hängt sie an einen DOM-Baum an. In diesem Fall ersetzt das gerenderte DOM den Inhalt des Body-Tags des Dokuments.
+
+Übersetzt mit www.DeepL.com/Translator
 
 ### Render dynamic text
 
+Mit einer statischen Vorlage können Sie nicht sehr weit kommen. lit-html ermöglicht es Ihnen, Bindings mit `${expression}` Platzhaltern im Template-Literal zu erstellen:
+
+```javascript
+const aTemplate = html`<h1>${title}</h1>`;
+```
+
+Um Ihre Vorlage dynamisch zu machen, können Sie eine Vorlagenfunktion anlegen. Rufen Sie die Vorlagenfunktion jedes Mal auf, wenn sich Ihre Daten ändern.
+
+```javascript
+import {html, render} from 'lit-html';
+
+// Definition einer Template-Funktion
+const myTemplate = (name) => html`<div>Hello ${name}</div>`;
+
+// Rendern der Vorlage mit einigen Daten
+render(myTemplate('world'), document.body);
+
+// ... später ... 
+// Rendern der Vorlage mit anderen Daten
+render(myTemplate('lit-html'), document.body);
+```
+
+Wenn Sie die Vorlagenfunktion aufrufen, erfasst lit-html die aktuellen Ausdruckswerte. Die Template-Funktion erstellt keine DOM-Knoten, daher ist sie schnell und kostengünstig.
+
+Die Template-Funktion gibt ein TemplateResult zurück, das eine Funktion der Eingabedaten ist. Dies ist eines der Hauptprinzipien bei der Verwendung von lit-html: die Erstellung von UI als Funktion des Zustands.
+
+Wenn Sie render aufrufen, aktualisiert lit-html nur die Teile der Vorlage, die sich seit dem letzten render geändert haben. Dies macht die Aktualisierung von lit-html sehr schnell.
+
+### using expression
+
+Das vorherige Beispiel zeigt die Interpolation eines einfachen Textwertes, aber die Bindung kann jede Art von JavaScript-Ausdruck beinhalten:
+
+```javascript
+const myTemplate = (subtotal, tax) => html`<div>Total: ${subtotal + tax}</div>`;
+const myTemplate2 = (name) => html`<div>${formatName(name.given, name.family, name.title)}</div>`;
+```
+
+### Bind to attributes
+
+Zusätzlich zur Verwendung von Ausdrücken im Textinhalt eines Knotens können Sie diese auch an die Attribut- und Eigenschaftswerte eines Knotens binden.
+
+Standardmäßig erzeugt ein Ausdruck im Wert eines Attributs eine Attributbindung:
+
+```javascript
+// Setzen der Klassenattribute
+const myTemplate = (data) => html`<div class=${data.cssClass}>Stylish text.</div>`;
+```
+
+Da Attributwerte immer Zeichenketten sind, sollte der Ausdruck einen Wert zurückgeben, der in eine Zeichenkette umgewandelt werden kann.
+
+Verwenden Sie das Präfix `?` für eine boolesche Attributbindung. Das Attribut wird hinzugefügt, wenn der Ausdruck zu einem Wahrheitswert ausgewertet wird, entfernt, wenn er zu einem Falsy-Wert ausgewertet wird:
+
+```javascript
+const myTemplate2 = (data) => html`<div ?disabled=${!data.active}>Stylish text.</div>`;
+```
+
+### Bind to properties
+
+Sie können sich auch über das Präfix . und den Eigenschaftsnamen an die JavaScript-Eigenschaften eines Knotens binden:
+
+```javascript
+const myTemplate3 = (data) => html`<my-list .listItems=${data.items}></my-list>`;
+```
+
+Mit Eigenschaftsbindungen können Sie komplexe Daten im Baum an Teilkomponenten übergeben.
+
+Beachten Sie, dass der Eigenschaftsname in diesem Beispiel - listItems - gemischt ist. Obwohl HTML-Attribute nicht zwischen Groß- und Kleinschreibung unterscheiden, bewahrt lit-html den Fall, wenn es das Template verarbeitet.
+
+### Add event listeners
+
+Vorlagen können auch deklarative Ereignishörer beinhalten. Ein Event Listener sieht aus wie eine Attributbindung, aber mit dem Präfix @ gefolgt von einem Eventnamen:
+
+```javascript
+const myTemplate = () => html`<button @click=${clickHandler}>Click Me!</button>`;
+```
+
+Dies entspricht dem Aufruf von `addEventListener('click', clickHandler)` auf dem Button-Element.
+
+Der Event Listener kann entweder eine reine Funktion oder ein Objekt mit einer handleEvent-Methode sein:
+
+```javascript
+const clickHandler = {
+  // handleEvent-Methode ist erforderlich
+  handleEvent(e) { 
+    console.log('clicked!');
+  },
+  // Event Listener Objekte können auch Null oder mehr des Events definieren.
+  // Listener Optionen: capture, passive, und once.
+  capture: true,
+};
+```
+
+:point_up: Achtung
+>Objekte des Event-Hörers. Wenn Sie einen Listener über ein Event-Listener-Objekt angeben, wird das Listener-Objekt selbst als Event-Kontext (dieser Wert) festgelegt.

@@ -4,18 +4,17 @@ description: template literals library
 
 # lit-html
 
-## Introduction
+## Einleitung
 
-### What is lit-html
+### Was ist lit-html
 
 lit-html ist eine einfache, moderne, sichere, kleine und schnelle HTML-Template-Bibliothek für JavaScript.
 
 lit-html ermöglicht es Ihnen, HTML-Templates in JavaScript mit Template-Literalen mit eingebetteten JavaScript-Ausdrücken zu schreiben. Hinter den Kulissen erstellt lit-html HTML `<template>` Elemente aus Ihren JavaScript-Vorlagen und verarbeitet sie so, dass sie genau weiß, wo sie die Werte aus Ausdrücken einfügen und aktualisieren muss.
 
+### lit-html Vorlagen
 
-### lit-html Templates
-
-lit-html-Templates sind getagte Template-Literale - sie sehen aus wie JavaScript-Zeichenketten, sind aber in Backticks (`) anstelle von Anführungszeichen eingeschlossen - und mit dem HTML-Tag von lit-html versehen:
+lit-html-Templates sind getagte Template-Literale - sie sehen aus wie JavaScript-Zeichenketten, sind aber in Backticks \(\`\) anstelle von Anführungszeichen eingeschlossen - und mit dem HTML-Tag von lit-html versehen:
 
 ```javascript
 html`<h1>Hello ${name}</h1>`
@@ -31,18 +30,18 @@ let myTemplate = (data) => html`
 
 lit-html wird faul gerendert. Der Aufruf dieser Funktion wertet das Template-Literal mit dem HTML-Tag lit-html aus und gibt ein TemplateResult zurück - einen Datensatz der zu rendernden Vorlage und Daten, mit denen sie dargestellt werden kann. TemplateResults sind sehr billig zu produzieren und es findet keine echte Arbeit statt, bis sie im DOM gerendert werden.
 
-### Rendering
+### Rendern
 
-Um ein TemplateResultat zu rendern, rufen Sie die Funktion render() mit einem Ergebnis und einem DOM-Container auf, in den Sie rendern möchten:
+Um ein TemplateResultat zu rendern, rufen Sie die Funktion render\(\) mit einem Ergebnis und einem DOM-Container auf, in den Sie rendern möchten:
 
 ```javascript
 const result = myTemplate({title: 'Hello', body: 'lit-html is cool'});
 render(result, document.body);
 ```
 
-## Writing Templates
+## Vorlagen schreiben
 
-### Render static html
+### Rendern von statischem HTML
 
 Die einfachste Sache, die man in lit-html tun kann, ist, etwas statisches HTML zu rendern.
 
@@ -56,15 +55,13 @@ const myTemplate = html`<div>Hello World</div>`;
 render(myTemplate, document.body);
 ```
 
-Die lit-html-Vorlage ist ein getaggtes Vorlagenliteral. Die Vorlage selbst sieht aus wie eine normale JavaScript-Zeichenkette, ist aber in Backticks (`) anstelle von Anführungszeichen eingeschlossen. Der Browser übergibt die Zeichenkette an die HTML-Tag-Funktion von lit-html.
+Die lit-html-Vorlage ist ein getaggtes Vorlagenliteral. Die Vorlage selbst sieht aus wie eine normale JavaScript-Zeichenkette, ist aber in Backticks \(\`\) anstelle von Anführungszeichen eingeschlossen. Der Browser übergibt die Zeichenkette an die HTML-Tag-Funktion von lit-html.
 
 Die HTML-Tag-Funktion gibt ein TemplateResultat zurück - ein leichtgewichtiges Objekt, das die zu rendernde Vorlage repräsentiert.
 
 Die Renderfunktion erstellt tatsächlich DOM-Knoten und hängt sie an einen DOM-Baum an. In diesem Fall ersetzt das gerenderte DOM den Inhalt des Body-Tags des Dokuments.
 
-Übersetzt mit www.DeepL.com/Translator
-
-### Render dynamic text
+### Rendern dynamischen Texts
 
 Mit einer statischen Vorlage können Sie nicht sehr weit kommen. lit-html ermöglicht es Ihnen, Bindings mit `${expression}` Platzhaltern im Template-Literal zu erstellen:
 
@@ -94,7 +91,7 @@ Die Template-Funktion gibt ein TemplateResult zurück, das eine Funktion der Ein
 
 Wenn Sie render aufrufen, aktualisiert lit-html nur die Teile der Vorlage, die sich seit dem letzten render geändert haben. Dies macht die Aktualisierung von lit-html sehr schnell.
 
-### using expression
+### Ausdrücke benutzen
 
 Das vorherige Beispiel zeigt die Interpolation eines einfachen Textwertes, aber die Bindung kann jede Art von JavaScript-Ausdruck beinhalten:
 
@@ -103,7 +100,7 @@ const myTemplate = (subtotal, tax) => html`<div>Total: ${subtotal + tax}</div>`;
 const myTemplate2 = (name) => html`<div>${formatName(name.given, name.family, name.title)}</div>`;
 ```
 
-### Bind to attributes
+### Mit Attributen verbinden
 
 Zusätzlich zur Verwendung von Ausdrücken im Textinhalt eines Knotens können Sie diese auch an die Attribut- und Eigenschaftswerte eines Knotens binden.
 
@@ -122,7 +119,7 @@ Verwenden Sie das Präfix `?` für eine boolesche Attributbindung. Das Attribut 
 const myTemplate2 = (data) => html`<div ?disabled=${!data.active}>Stylish text.</div>`;
 ```
 
-### Bind to properties
+### Mit Eigenschaften verbinden
 
 Sie können sich auch über das Präfix . und den Eigenschaftsnamen an die JavaScript-Eigenschaften eines Knotens binden:
 
@@ -134,7 +131,7 @@ Mit Eigenschaftsbindungen können Sie komplexe Daten im Baum an Teilkomponenten 
 
 Beachten Sie, dass der Eigenschaftsname in diesem Beispiel - listItems - gemischt ist. Obwohl HTML-Attribute nicht zwischen Groß- und Kleinschreibung unterscheiden, bewahrt lit-html den Fall, wenn es das Template verarbeitet.
 
-### Add event listeners
+### Event Listener hinzufügen
 
 Vorlagen können auch deklarative Ereignishörer beinhalten. Ein Event Listener sieht aus wie eine Attributbindung, aber mit dem Präfix @ gefolgt von einem Eventnamen:
 
@@ -158,5 +155,7 @@ const clickHandler = {
 };
 ```
 
-:point_up: Achtung
->Objekte des Event-Hörers. Wenn Sie einen Listener über ein Event-Listener-Objekt angeben, wird das Listener-Objekt selbst als Event-Kontext (dieser Wert) festgelegt.
+:point\_up: Achtung
+
+> Objekte des Event-Hörers. Wenn Sie einen Listener über ein Event-Listener-Objekt angeben, wird das Listener-Objekt selbst als Event-Kontext \(dieser Wert\) festgelegt.
+

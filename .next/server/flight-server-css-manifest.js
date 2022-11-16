@@ -1,1 +1,0 @@
-self.__RSC_CSS_MANIFEST={"__entry_css__":{"/project/docs/app/page":["/project/docs/app/globals.css"]},"/project/docs/app/layout.tsx":["/project/docs/app/globals.css"]}
